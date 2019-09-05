@@ -1,0 +1,33 @@
+version: '3'
+services:
+  api:
+    build: .
+    ports:
+      - "5000:5000"
+    networks:
+      lifeworks:
+        aliases:
+          - api
+    volumes:
+      - .:/code
+    environment:
+      FLASK_ENV: development
+  db:
+    image: "influxdb"
+    ports:
+      - "8086:8086"
+    networks:
+      lifeworks:
+        aliases:
+          - db
+  geoip-api:
+    image: "workivate/geoip-api"
+    networks:
+      lifeworks:
+        aliases:
+          - geoip-api
+
+
+networks:
+  lifeworks:
+    external: true
