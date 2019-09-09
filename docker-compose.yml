@@ -12,6 +12,21 @@ services:
       - .:/code
     environment:
       FLASK_ENV: development
+  worker:
+    build: .
+    networks:
+      lifeworks:
+        aliases:
+          - worker
+    volumes:
+      - .:/code
+    command: celery worker -B -l info -A api.celery
+  redis:
+    image: "redis"
+    networks:
+      lifeworks:
+        aliases:
+          - redis
   db:
     image: "influxdb"
     ports:
